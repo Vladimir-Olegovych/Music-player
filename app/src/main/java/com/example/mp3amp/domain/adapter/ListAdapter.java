@@ -10,11 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mp3amp.R;
 import com.example.mp3amp.databinding.CardViewBinding;
+import com.example.mp3amp.domain.holder.ListHolder;
 import com.example.mp3amp.domain.models.MusicData;
 
 import java.util.ArrayList;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListHolder> {
+public class ListAdapter extends RecyclerView.Adapter<ListHolder> {
 
     private ArrayList<MusicData> musicDataArrayList = new ArrayList<>();
 
@@ -26,25 +27,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListHolder> {
         musicDataArrayList.clear();
         notifyDataSetChanged();
     }
-    public class ListHolder extends RecyclerView.ViewHolder {
-        CardViewBinding binding;
-        public ListHolder(@NonNull View itemView) {
-            super(itemView);
-            binding = CardViewBinding.bind(itemView);
-        }
-        public void bind(MusicData musicData){
-            binding.tvName.setText(musicData.name);
-        }
-    }
 
     @NonNull @Override
-    public ListAdapter.ListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view, parent, false);
         return new ListHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListAdapter.ListHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ListHolder holder, int position) {
         holder.bind(musicDataArrayList.get(position));
     }
 

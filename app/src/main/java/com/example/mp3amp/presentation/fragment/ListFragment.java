@@ -35,7 +35,7 @@ public class ListFragment extends Fragment {
         binding.rcView.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rcView.setAdapter(adapter);
 
-        adapter.getList(new MusicData("loxS"));
-        adapter.getList(new MusicData("loxSsadasd"));
+        adapter.getList(new MusicData("Я"));
+        adapter.getList(new MusicData("мяу"));
     }
 }

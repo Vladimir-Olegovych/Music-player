@@ -1,16 +1,18 @@
 package com.example.mp3amp.domain.usecase;
 
 
-import com.example.mp3amp.data.repository.GetDownloadsListRepositoryImpl;
-import com.example.mp3amp.domain.models.MusicData;
+import com.example.mp3amp.domain.models.AudioModel;
+import com.example.mp3amp.domain.repository.GetDownloadsListRepository;
+
+import java.util.ArrayList;
 
 public class GetDownloadsListUseCase {
-    GetDownloadsListRepositoryImpl dataRepository;
+    GetDownloadsListRepository dataRepository;
 
-    public GetDownloadsListUseCase(GetDownloadsListRepositoryImpl dataRepository){
+    public GetDownloadsListUseCase(GetDownloadsListRepository dataRepository){
         this.dataRepository = dataRepository;
     }
-    public MusicData execute(MusicData data){
-        return dataRepository.getData(data);
+    public ArrayList<AudioModel> execute(){
+        return dataRepository.getData();
     }
 }

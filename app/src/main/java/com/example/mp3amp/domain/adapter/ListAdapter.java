@@ -3,23 +3,21 @@ package com.example.mp3amp.domain.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mp3amp.R;
-import com.example.mp3amp.databinding.CardViewBinding;
 import com.example.mp3amp.domain.holder.ListHolder;
-import com.example.mp3amp.domain.models.MusicData;
+import com.example.mp3amp.domain.models.AudioModel;
 
 import java.util.ArrayList;
 
 public class ListAdapter extends RecyclerView.Adapter<ListHolder> {
 
-    private ArrayList<MusicData> musicDataArrayList = new ArrayList<>();
+    private final ArrayList<AudioModel> musicDataArrayList = new ArrayList<>();
 
-    public void getList(MusicData musicData){
+    public void getList(AudioModel musicData){
         musicDataArrayList.add(musicData);
         notifyDataSetChanged();
     }

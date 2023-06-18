@@ -1,16 +1,18 @@
 package com.example.mp3amp.data.repository;
 
 import com.example.mp3amp.domain.models.MusicSettings;
+import com.example.mp3amp.domain.repository.SettingsRepository;
 
-public class SettingsRepositoryImpl {
+public class SettingsRepositoryImpl implements SettingsRepository {
 
-    public Boolean saveSettings(MusicSettings settings){
-
+    @Override
+    public Boolean saveSettings(MusicSettings settings) {
         return true;
     }
-    public MusicSettings getSettings(MusicSettings settings){
 
-        return new MusicSettings(60);
+    @Override
+    public MusicSettings getSettings() {
+        return null;
     }
 
 }

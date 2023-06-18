@@ -1,12 +1,12 @@
 package com.example.mp3amp.domain.usecase;
 
-import com.example.mp3amp.data.repository.SettingsRepositoryImpl;
 import com.example.mp3amp.domain.models.MusicSettings;
+import com.example.mp3amp.domain.repository.SettingsRepository;
 
 public class SaveSettingUseCase {
-    SettingsRepositoryImpl dataRepository;
+    SettingsRepository dataRepository;
 
-    public SaveSettingUseCase(SettingsRepositoryImpl dataRepository){
+    public SaveSettingUseCase(SettingsRepository dataRepository){
         this.dataRepository = dataRepository;
     }
     public Boolean execute(MusicSettings settings){

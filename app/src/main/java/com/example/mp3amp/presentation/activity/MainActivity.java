@@ -1,15 +1,21 @@
 package com.example.mp3amp.presentation.activity;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.Navigation;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.mp3amp.R;
 
@@ -34,11 +40,7 @@ public class MainActivity extends AppCompatActivity {
             Navigation.findNavController(this, R.id.nav_fragment_host).navigate(R.id.action_listFragment_to_settingsFragment);
         }
         if (item.getItemId() == R.id.add) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, MediaStore.Downloads.EXTERNAL_CONTENT_URI);
-                intent.setType("*/*");
-                this.startActivity(intent);
-            }
+            Toast.makeText(this, "niggers", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -4,19 +4,20 @@ import android.net.Uri;
 
 public class AudioModel {
     public String name;
-    public int size;
+    public String data;
+    public Uri uri;
 
-    public AudioModel(String name, int size) {
+    public AudioModel(String name, String data, Uri uri) {
         this.name = name;
-        this.size = size;
+        this.data = data;
+        this.uri = uri;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
-
-
-    public int getSize(){
-        return size;
+    public String getData(){
+        return data;
     }
+    public Uri getUri(){return uri;}
 }

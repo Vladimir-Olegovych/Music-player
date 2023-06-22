@@ -16,5 +16,10 @@ public class ListHolder extends RecyclerView.ViewHolder {
     }
     public void bind(AudioModel musicData){
         binding.tvName.setText(musicData.name);
+        binding.tvData.setText(musicData.data);
+        
+    }
+    public CardViewBinding getBinding(){
+        return binding;
     }
 }

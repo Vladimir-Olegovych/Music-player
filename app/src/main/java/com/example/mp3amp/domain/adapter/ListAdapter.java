@@ -40,6 +40,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListHolder> {
         notifyDataSetChanged();
     }
     public void destroy(){
+        if(mediaPlayer != null) mediaPlayer.release();
         mediaPlayer = null;
     }
 

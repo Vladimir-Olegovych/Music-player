@@ -49,7 +49,6 @@ public class ListFragment extends Fragment {
         binding.rcView.setAdapter(adapter);
 
         for (AudioModel it : dataRepository.getData()){
-            Log.d("MyMp3LOg", it.uri.toString());
             adapter.getList(it);
         }
     }

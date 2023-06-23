@@ -5,14 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
-import android.os.storage.StorageManager;
-import android.os.storage.StorageVolume;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -20,12 +14,8 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.example.mp3amp.domain.models.AudioModel;
 import com.example.mp3amp.domain.repository.GetDownloadsListRepository;
-import com.example.mp3amp.presentation.activity.MainActivity;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class GetDownloadsListRepositoryImpl implements GetDownloadsListRepository {
     private final Context context;
@@ -45,7 +35,6 @@ public class GetDownloadsListRepositoryImpl implements GetDownloadsListRepositor
             String[] selectionArgs = new String[] {
                     MediaStore.Audio.Media.DISPLAY_NAME,
                     MediaStore.Audio.Media.DATA,
-                    MediaStore.Audio.Media.VOLUME_NAME
             };
 
             Cursor c = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, selectionArgs, null, null, null);
@@ -57,11 +46,8 @@ public class GetDownloadsListRepositoryImpl implements GetDownloadsListRepositor
 
                 @SuppressLint("Range") String data =
                         c.getString(c.getColumnIndex(MediaStore.Audio.Media.DATA));
-                @SuppressLint("Range") String uri =
-                        c.getString(c.getColumnIndex(MediaStore.Audio.Media.VOLUME_NAME));
 
-                Uri music = MediaStore.Audio.Media.getContentUri(uri);
-                list.add(new AudioModel(name, data, music));
+                list.add(new AudioModel(name, data));
             }
             c.close();
         }

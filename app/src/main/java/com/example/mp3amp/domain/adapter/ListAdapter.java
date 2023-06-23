@@ -2,6 +2,7 @@ package com.example.mp3amp.domain.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListHolder> {
 
     private final PlayMusic playMusic;
     private final Context context;
+    private MediaPlayer mediaPlayer;
 
     public ListAdapter(Context context){
         this.context = context;
@@ -36,6 +38,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListHolder> {
     public void clearList(){
         musicDataArrayList.clear();
         notifyDataSetChanged();
+    }
+    public void destroy(){
+        mediaPlayer.release();
+        mediaPlayer = null;
     }
 
     @NonNull @Override
@@ -57,19 +63,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListHolder> {
                 if (play.getDrawable().getConstantState() ==
                         context.getResources().
                                 getDrawable(R.drawable.baseline_play_circle_filled_24).
-                                getConstantState())
-                {
-                    if (playMusic.getPosition() != position){
+                                getConstantState()) {
+                    if (playMusic.getPosition() != -1 && position != playMusic.getPosition()){
                         playMusic.getPLay().setImageResource(R.drawable.baseline_play_circle_filled_24);
-                        playMusic.stop();
+                        mediaPlayer = playMusic.stop(mediaPlayer);
                     }
-
                     play.setImageResource(R.drawable.baseline_pause_circle_24);
-                    playMusic.play(data, position, play);
+                    mediaPlayer = playMusic.play(data, position, play, mediaPlayer);
                 }
                 else {
                     play.setImageResource(R.drawable.baseline_play_circle_filled_24);
-                    playMusic.stop();
+                    mediaPlayer = playMusic.stop(mediaPlayer);
                 }
             }
         );

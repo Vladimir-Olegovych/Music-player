@@ -52,4 +52,10 @@ public class ListFragment extends Fragment {
             adapter.getList(it);
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        adapter.destroy();
+    }
 }

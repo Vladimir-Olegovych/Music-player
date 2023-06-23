@@ -11,15 +11,14 @@ import java.io.IOException;
 
 public class PlayMusic {
 
-    private MediaPlayer mediaPlayer = new MediaPlayer();
     private final Context context;
     private String data;
     private ImageView play;
-    private int position;
+    private int position = -1;
 
-    public void stop(){
-        mediaPlayer.stop();
+    public MediaPlayer stop(MediaPlayer mediaPlayer){
         mediaPlayer.release();
+        return mediaPlayer;
     }
 
     public String getData(){
@@ -38,7 +37,7 @@ public class PlayMusic {
         this.context = context;
     }
 
-    public void play(String data, int position, ImageView play){
+    public MediaPlayer play(String data, int position, ImageView play, MediaPlayer mediaPlayer){
         this.data = data;
         this.position = position;
         this.play = play;
@@ -62,5 +61,6 @@ public class PlayMusic {
         }
         mediaPlayer.getCurrentPosition();
         mediaPlayer.start();
+        return mediaPlayer;
     }
 }

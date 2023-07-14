@@ -9,16 +9,14 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mp3amp.data.repository.GetDownloadsListRepositoryImpl;
 import com.example.mp3amp.databinding.FragmentListBinding;
-import com.example.mp3amp.domain.adapter.ListAdapter;
+import com.example.mp3amp.presentation.adapter.ListAdapter;
 import com.example.mp3amp.domain.models.AudioModel;
-import com.example.mp3amp.domain.usecase.GetDownloadsListUseCase;
 
 public class ListFragment extends Fragment {
 
@@ -26,7 +24,6 @@ public class ListFragment extends Fragment {
     private ListAdapter adapter;
 
     private GetDownloadsListRepositoryImpl dataRepository;
-    private GetDownloadsListUseCase dataUseCase;
 
 
     @Override
@@ -35,9 +32,7 @@ public class ListFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentListBinding.inflate(inflater);
         dataRepository = new GetDownloadsListRepositoryImpl(requireContext(), this.requireActivity());
-        dataUseCase = new GetDownloadsListUseCase(dataRepository);
         adapter = new ListAdapter(requireContext());
-        adapter.clearList();
         return binding.getRoot();
     }
 

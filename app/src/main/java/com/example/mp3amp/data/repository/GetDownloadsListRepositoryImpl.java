@@ -5,10 +5,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -27,7 +27,6 @@ public class GetDownloadsListRepositoryImpl implements GetDownloadsListRepositor
         this.activity = activity;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public ArrayList<AudioModel> getData() {
         ArrayList<AudioModel> list = new ArrayList<>();
@@ -36,8 +35,8 @@ public class GetDownloadsListRepositoryImpl implements GetDownloadsListRepositor
                     MediaStore.Audio.Media.DISPLAY_NAME,
                     MediaStore.Audio.Media.DATA,
             };
-
-            Cursor c = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, selectionArgs, null, null, null);
+            Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+            Cursor c = context.getContentResolver().query(uri, selectionArgs, null, null, null);
 
             while(c.moveToNext()) {
 

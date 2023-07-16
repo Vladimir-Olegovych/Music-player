@@ -19,31 +19,31 @@ import java.util.ArrayList;
 
 public class ListAdapter extends RecyclerView.Adapter<ListHolder> {
 
-    private final Context context;
-    private final PlayMusicRepositoryImpl dataRepository = new PlayMusicRepositoryImpl();
+    private final PlayMusicRepositoryImpl dataRepository;
     private final ArrayList<AudioModel> musicDataArrayList = new ArrayList<>();
     private ImageView play;
     private String data = "null";
+    private Boolean pause = true;
 
 
 
     public ListAdapter(Context context){
-        this.context = context;
+        dataRepository = new PlayMusicRepositoryImpl(context);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void getList(AudioModel musicData){
         musicDataArrayList.add(musicData);
         notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void clearList(){
         musicDataArrayList.clear();
         notifyDataSetChanged();
     }
 
-    public void destroy(){
-        dataRepository.clear();
-    }
+    public void destroy(){ dataRepository.clear(); }
 
     @Override
     public int getItemCount() {
@@ -63,34 +63,47 @@ public class ListAdapter extends RecyclerView.Adapter<ListHolder> {
         holder.bind(musicDataArrayList.get(position));
         String data = musicDataArrayList.get(position).data;
         ImageView play = holder.getBinding().play;
+        ImageView restart = holder.getBinding().restart;
 
         if (this.data.equals(data)){
             setResource(R.drawable.baseline_pause_circle_24, play);
         } else {
             setResource(R.drawable.baseline_play_circle_24, play);
         }
-
         play.setOnClickListener(
                 v -> {
-                    if ((Integer) play.getTag() == R.drawable.baseline_play_circle_24) {
-
-                        if (this.play != null && !this.play.getTag().equals(play.getTag())) {
-                            this.data = "null";
-                            setResource(R.drawable.baseline_play_circle_24, this.play);
+                    if (play.getTag().equals(R.drawable.baseline_play_circle_24)) {
+                        if (this.data.equals("null") && this.play == null){
+                            //start
+                            pause = true;
+                            playMusic(data, play);
                         }
-
-                        this.data = data;
-                        this.play = play;
-
-                        setResource(R.drawable.baseline_pause_circle_24, play);
-
-                        dataRepository.stop();
-                        dataRepository.play(data, context);
-
+                        if (this.data.equals(data) && this.play.getTag().equals(R.drawable.baseline_play_circle_24) ){
+                            //resume
+                            pause = true;
+                            setResource(R.drawable.baseline_pause_circle_24, this.play);
+                            dataRepository.resume();
+                        }
+                        if (!this.data.equals(data) && play.getTag().equals(R.drawable.baseline_play_circle_24)){
+                            //reset
+                            pause = true;
+                            dataRepository.stop();
+                            setResource(R.drawable.baseline_play_circle_24, this.play);
+                            playMusic(data, play);
+                        }
                     }else {
-                        this.data = "null";
+                        //pause
+                        pause = false;
                         setResource(R.drawable.baseline_play_circle_24, play);
+                        dataRepository.pause();
+                    }
+                }
+        );
+        restart.setOnClickListener(
+                v-> {
+                    if (this.data.equals(data) && pause.equals(true)){
                         dataRepository.stop();
+                        dataRepository.play(this.data);
                     }
                 }
         );
@@ -99,5 +112,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListHolder> {
     private void setResource(int resource, ImageView image){
         image.setTag(resource);
         image.setImageResource(resource);
+    }
+    private void playMusic(String data, ImageView play){
+        this.data = data;
+        this.play = play;
+        setResource(R.drawable.baseline_pause_circle_24, play);
+        dataRepository.play(data);
     }
 }

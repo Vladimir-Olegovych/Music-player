@@ -1,9 +1,9 @@
 package com.gigcreator.mp3amp.domain.repository;
 
-import android.content.Context;
-
 public interface PlayMusicRepository {
-    void play(String data, Context context);
+    void play(String data);
     void stop();
     void clear();
+    void pause();
+    void resume();
 }

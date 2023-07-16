@@ -70,20 +70,21 @@ public class ListAdapter extends RecyclerView.Adapter<ListHolder> {
             setResource(R.drawable.baseline_play_circle_24, play);
         }
 
-        holder.getBinding().play.setOnClickListener(
+        play.setOnClickListener(
                 v -> {
                     if ((Integer) play.getTag() == R.drawable.baseline_play_circle_24) {
 
-                        if (this.play != null && this.play.getTag() != play.getTag()) {
-                            this.data = data;
-                            dataRepository.stop();
+                        if (this.play != null && !this.play.getTag().equals(play.getTag())) {
+                            this.data = "null";
                             setResource(R.drawable.baseline_play_circle_24, this.play);
                         }
 
                         this.data = data;
                         this.play = play;
+
                         setResource(R.drawable.baseline_pause_circle_24, play);
 
+                        dataRepository.stop();
                         dataRepository.play(data, context);
 
                     }else {

@@ -41,6 +41,11 @@ public class PlayMusicRepositoryImpl implements PlayMusicRepository {
     }
 
     @Override
+    public void restart() {
+        mediaPlayer.seekTo(0);
+    }
+
+    @Override
     public void play(String data) {
         Uri myUri = Uri.fromFile(new File(data));
             mediaPlayer.setAudioAttributes(

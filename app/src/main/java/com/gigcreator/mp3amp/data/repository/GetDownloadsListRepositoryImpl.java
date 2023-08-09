@@ -2,20 +2,28 @@ package com.gigcreator.mp3amp.data.repository;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.gigcreator.mp3amp.R;
 import com.gigcreator.mp3amp.domain.models.AudioModel;
 import com.gigcreator.mp3amp.domain.repository.GetDownloadsListRepository;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class GetDownloadsListRepositoryImpl implements GetDownloadsListRepository {
     private final Context context;
@@ -29,26 +37,59 @@ public class GetDownloadsListRepositoryImpl implements GetDownloadsListRepositor
 
     @Override
     public ArrayList<AudioModel> getData() {
+
         ArrayList<AudioModel> list = new ArrayList<>();
         if (requestForPermission()) {
-            String[] selectionArgs = new String[] {
-                    MediaStore.Audio.Media.DISPLAY_NAME,
+
+            final Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+
+            final String[] cursor_cols = { MediaStore.Audio.Media._ID,
+                    MediaStore.Audio.Media.TITLE,
                     MediaStore.Audio.Media.DATA,
-            };
-            Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-            Cursor c = context.getContentResolver().query(uri, selectionArgs, null, null, null);
+                    MediaStore.Audio.Media.ALBUM_ID,
+                    MediaStore.Audio.Media.DURATION};
 
-            while(c.moveToNext()) {
+            final String where = MediaStore.Audio.Media.IS_MUSIC + "=1";
+            final Cursor cursor = context.getContentResolver().query(uri,
+                    cursor_cols, where, null, null);
 
-                @SuppressLint("Range") String name =
-                        c.getString(c.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
+            while (cursor.moveToNext()) {
+                String track = cursor.getString(cursor
+                        .getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
 
-                @SuppressLint("Range") String data =
-                        c.getString(c.getColumnIndex(MediaStore.Audio.Media.DATA));
+                String data = cursor.getString(cursor
+                        .getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
 
-                list.add(new AudioModel(name, data));
+                int albumId = cursor.getInt(cursor
+                        .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
+
+                int duration = cursor.getInt(cursor
+                        .getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+
+                Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+
+                Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
+
+                Log.d("MyLogNEWS", String.valueOf(albumArtUri));
+
+
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(
+                            context.getContentResolver(), albumArtUri);
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 150, 150, true);
+
+                } catch (FileNotFoundException exception) {
+                    exception.printStackTrace();
+                    bitmap = BitmapFactory.decodeResource(context.getResources(),
+                            R.drawable.music);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                list.add(new AudioModel(track, data, bitmap));
             }
-            c.close();
+            cursor.close();
         }
         return list;
     }

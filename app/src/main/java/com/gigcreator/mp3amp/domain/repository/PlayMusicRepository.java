@@ -6,4 +6,5 @@ public interface PlayMusicRepository {
     void clear();
     void pause();
     void resume();
+    void restart();
 }

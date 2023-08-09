@@ -12,11 +12,6 @@ public class ListHolder extends RecyclerView.ViewHolder {
 
     CardViewBinding binding;
 
-    public CardViewBinding getBinding(){
-        return binding;
-    }
-
-
     public ListHolder(@NonNull View itemView) {
         super(itemView);
         binding = CardViewBinding.bind(itemView);
@@ -27,4 +22,7 @@ public class ListHolder extends RecyclerView.ViewHolder {
         binding.tvData.setText(musicData.data);
     }
 
+    public CardViewBinding getCardView() {
+        return binding;
+    }
 }

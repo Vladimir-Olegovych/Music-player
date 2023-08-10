@@ -1,3 +1,3 @@
 Clean architecture android!
-![photo1691586816](https://github.com/Vladimir-Olegovych/Music-player/assets/117392112/f1703ff7-07d9-4823-b653-a3aae99e0824)
-![photo1691586817](https://github.com/Vladimir-Olegovych/Music-player/assets/117392112/7ba77d5b-8589-46a9-afa5-e24ec6884e34)
+![photo1691688143](https://github.com/Vladimir-Olegovych/Music-player/assets/117392112/d5073240-c724-4619-b706-47ee50f15338)
+![photo1691688163](https://github.com/Vladimir-Olegovych/Music-player/assets/117392112/34d45519-1b50-4747-94fd-f14fc4277d84)

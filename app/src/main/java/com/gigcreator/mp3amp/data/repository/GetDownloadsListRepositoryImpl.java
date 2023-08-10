@@ -46,8 +46,8 @@ public class GetDownloadsListRepositoryImpl implements GetDownloadsListRepositor
             final String[] cursor_cols = { MediaStore.Audio.Media._ID,
                     MediaStore.Audio.Media.TITLE,
                     MediaStore.Audio.Media.DATA,
-                    MediaStore.Audio.Media.ALBUM_ID,
-                    MediaStore.Audio.Media.DURATION};
+                    MediaStore.Audio.Media.ALBUM_ID
+            };
 
             final String where = MediaStore.Audio.Media.IS_MUSIC + "=1";
             final Cursor cursor = context.getContentResolver().query(uri,
@@ -63,28 +63,24 @@ public class GetDownloadsListRepositoryImpl implements GetDownloadsListRepositor
                 int albumId = cursor.getInt(cursor
                         .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
 
-                int duration = cursor.getInt(cursor
-                        .getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
 
                 Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
 
                 Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
-
-                Log.d("MyLogNEWS", String.valueOf(albumArtUri));
 
 
                 Bitmap bitmap = null;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(
                             context.getContentResolver(), albumArtUri);
-                    bitmap = Bitmap.createScaledBitmap(bitmap, 150, 150, true);
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
 
                 } catch (FileNotFoundException exception) {
-                    exception.printStackTrace();
+                    System.out.println("FileNotFoundException");
                     bitmap = BitmapFactory.decodeResource(context.getResources(),
                             R.drawable.music);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("IOException");
                 }
 
                 list.add(new AudioModel(track, data, bitmap));

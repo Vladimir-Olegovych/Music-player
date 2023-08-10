@@ -27,7 +27,7 @@
             android:id="@+id/tvData"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/red"
+            android:textColor="@color/teal_700"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

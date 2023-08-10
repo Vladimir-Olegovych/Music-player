@@ -40,9 +40,20 @@ public class PlayMusicRepositoryImpl implements PlayMusicRepository {
         mediaPlayer.start();
     }
 
+
     @Override
-    public void restart() {
-        mediaPlayer.seekTo(0);
+    public void seekPlayer(int progress) {
+        mediaPlayer.seekTo(progress);
+    }
+
+    @Override
+    public int getDuration() {
+        return mediaPlayer.getDuration();
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        return mediaPlayer.getCurrentPosition();
     }
 
     @Override

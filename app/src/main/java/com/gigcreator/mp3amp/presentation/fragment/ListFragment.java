@@ -85,7 +85,7 @@ public class ListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentListBinding.inflate(inflater);
-        dataRepository = new GetDownloadsListRepositoryImpl(requireContext(), this.requireActivity());
+        dataRepository = new GetDownloadsListRepositoryImpl(requireContext());
         mediaPlayer = new PlayMusicRepositoryImpl(requireContext());
         adapter = new ListAdapter(this);
         return binding.getRoot();
@@ -105,11 +105,12 @@ public class ListFragment extends Fragment {
         try {
             AudioModel music = musicList.get(0);
             binding.musicName.setText(music.name);
+            binding.imageArtist.setImageBitmap(music.bitmap);
             mediaPlayer.play(music.data);
             mediaPlayer.pause();
             initialiseSeekBar();
         }catch (Throwable e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         binding.buttonPlay.setOnClickListener(v -> onClickButton());

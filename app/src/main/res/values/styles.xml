@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ImageView_Artist">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">200dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <style name="ButtonStop">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:src">@drawable/baseline_stop_circle</item>
+    </style>
+
+    <style name="ButtonPlay">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:src">@drawable/baseline_play_circle_24</item>
+    </style>
+
+    <style name="TextViewMusicName">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/sf_pro_display_700</item>
+    </style>
+
+    <style name="SeekBar">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+    </style>
+
+    <style name="TextViewTime">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/sf_pro_display_500</item>
+    </style>
+
+    <style name="TextViewName">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/sf_pro_display_500</item>
+    </style>
+
+    <style name="TextViewData">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/teal_700</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/sf_pro_display_500</item>
+    </style>
+
+
+</resources>

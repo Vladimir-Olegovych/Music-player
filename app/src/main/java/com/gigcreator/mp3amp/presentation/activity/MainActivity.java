@@ -32,10 +32,4 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
-    /*
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-    */
 }

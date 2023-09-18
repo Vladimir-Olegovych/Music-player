@@ -5,8 +5,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gigcreator.domain.models.AudioModel;
 import com.gigcreator.mp3amp.databinding.CardViewBinding;
-import com.gigcreator.mp3amp.domain.models.AudioModel;
 
 public class ListHolder extends RecyclerView.ViewHolder {
 

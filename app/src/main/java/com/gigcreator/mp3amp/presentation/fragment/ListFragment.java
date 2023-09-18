@@ -12,17 +12,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 
+import com.gigcreator.data.repository.GetDownloadsListRepositoryImpl;
+import com.gigcreator.data.repository.PlayMusicRepositoryImpl;
+import com.gigcreator.domain.models.AudioModel;
 import com.gigcreator.mp3amp.R;
-import com.gigcreator.mp3amp.data.repository.GetDownloadsListRepositoryImpl;
-import com.gigcreator.mp3amp.data.repository.PlayMusicRepositoryImpl;
 import com.gigcreator.mp3amp.databinding.FragmentListBinding;
-import com.gigcreator.mp3amp.domain.models.AudioModel;
 import com.gigcreator.mp3amp.presentation.adapter.ListAdapter;
 
 import java.util.ArrayList;
@@ -46,16 +45,6 @@ public class ListFragment extends Fragment {
         binding.buttonPlay.setTag(tag);
     }
 
-    private void onClickButton(){
-        if (binding.buttonPlay.getTag() != null && binding.buttonPlay.getTag().equals(R.drawable.baseline_pause_circle_24)){
-            mediaPlayer.pause();
-            setTagButton(R.drawable.baseline_play_circle_24);
-        }
-        else {
-            mediaPlayer.resume();
-            setTagButton(R.drawable.baseline_pause_circle_24);
-        }
-    }
 
     public void onClickListener(String data, String name, Bitmap bitmap) {
         mediaPlayer.stop();
@@ -81,6 +70,36 @@ public class ListFragment extends Fragment {
         return builder.toString();
     }
 
+    @SuppressLint("SetTextI18n")
+    private void initialiseSeekBar(){
+        binding.seekBar.setMax(mediaPlayer.getDuration());
+        final String duration = getTime(mediaPlayer.getDuration());
+        binding.textTime.setText("00:00" + " of " + duration);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    binding.seekBar.setProgress(mediaPlayer.getCurrentPosition());
+                    handler.postDelayed(this, 1000);
+                }catch (Exception e){
+                    binding.seekBar.setProgress(0);
+                }
+            }
+        }, 0);
+    }
+
+    private void onClickButton(){
+        if (binding.buttonPlay.getTag() != null && binding.buttonPlay.getTag().equals(R.drawable.baseline_pause_circle_24)){
+            mediaPlayer.pause();
+            setTagButton(R.drawable.baseline_play_circle_24);
+        }
+        else {
+            mediaPlayer.resume();
+            setTagButton(R.drawable.baseline_pause_circle_24);
+        }
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -102,6 +121,7 @@ public class ListFragment extends Fragment {
         for (AudioModel it : musicList){
             adapter.getList(it);
         }
+
         try {
             AudioModel music = musicList.get(0);
             binding.musicName.setText(music.name);
@@ -132,24 +152,5 @@ public class ListFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void initialiseSeekBar(){
-        binding.seekBar.setMax(mediaPlayer.getDuration());
-        final String duration = getTime(mediaPlayer.getDuration());
-        binding.textTime.setText("00:00" + " of " + duration);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    binding.seekBar.setProgress(mediaPlayer.getCurrentPosition());
-                    handler.postDelayed(this, 1000);
-                }catch (Exception e){
-                    binding.seekBar.setProgress(0);
-                }
-            }
-        }, 0);
     }
 }

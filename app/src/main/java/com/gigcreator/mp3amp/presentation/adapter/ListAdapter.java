@@ -47,7 +47,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListHolder> {
         holder.bind(musicDataArrayList.get(position));
         AudioModel audio = musicDataArrayList.get(position);
         holder.getCardView().getRoot().setOnClickListener(
-                v -> listFragment.onClickListener(audio.data, audio.name, audio.bitmap)
+                v -> {
+                    listFragment.setMusic(audio.data, audio.name, audio.bitmap);
+                    listFragment.setTagButton(R.drawable.baseline_pause_circle_24);
+                }
         );
     }
 }

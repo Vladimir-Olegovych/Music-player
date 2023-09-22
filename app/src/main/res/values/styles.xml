@@ -14,7 +14,7 @@
         <item name="android:layout_height">50dp</item>
         <item name="android:layout_marginStart">4dp</item>
         <item name="android:layout_marginTop">8dp</item>
-        <item name="android:src">@drawable/baseline_stop_circle</item>
+        <item name="android:src">@drawable/baseline_restart</item>
     </style>
 
     <style name="ButtonPlay">

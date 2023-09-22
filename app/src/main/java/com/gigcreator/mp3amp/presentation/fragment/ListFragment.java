@@ -1,16 +1,21 @@
 package com.gigcreator.mp3amp.presentation.fragment;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,20 +45,6 @@ public class ListFragment extends Fragment {
         mediaPlayer.clear();
     }
 
-    private void setTagButton(int tag){
-        binding.buttonPlay.setImageResource(tag);
-        binding.buttonPlay.setTag(tag);
-    }
-
-
-    public void onClickListener(String data, String name, Bitmap bitmap) {
-        mediaPlayer.stop();
-        mediaPlayer.play(data);
-        initialiseSeekBar();
-        binding.musicName.setText(name);
-        binding.imageArtist.setImageBitmap(bitmap);
-        setTagButton(R.drawable.baseline_pause_circle_24);
-    }
 
     private String getTime(final int milliSex){
 
@@ -68,6 +59,21 @@ public class ListFragment extends Fragment {
         builder.append(seconds);
 
         return builder.toString();
+    }
+
+    private void init(){
+        if (checkPermission()) {
+            try {
+                ArrayList<AudioModel> musicList = dataRepository.getData();
+                for (AudioModel it : musicList) {
+                    adapter.getList(it);
+                }
+                setMusic(musicList.get(0).data, musicList.get(0).name, musicList.get(0).bitmap);
+                mediaPlayer.pause();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -89,16 +95,6 @@ public class ListFragment extends Fragment {
         }, 0);
     }
 
-    private void onClickButton(){
-        if (binding.buttonPlay.getTag() != null && binding.buttonPlay.getTag().equals(R.drawable.baseline_pause_circle_24)){
-            mediaPlayer.pause();
-            setTagButton(R.drawable.baseline_play_circle_24);
-        }
-        else {
-            mediaPlayer.resume();
-            setTagButton(R.drawable.baseline_pause_circle_24);
-        }
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -110,32 +106,21 @@ public class ListFragment extends Fragment {
         return binding.getRoot();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.Q)
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.rcView.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rcView.setAdapter(adapter);
-
-        ArrayList<AudioModel> musicList = dataRepository.getData();
-        for (AudioModel it : musicList){
-            adapter.getList(it);
-        }
-
-        try {
-            AudioModel music = musicList.get(0);
-            binding.musicName.setText(music.name);
-            binding.imageArtist.setImageBitmap(music.bitmap);
-            mediaPlayer.play(music.data);
-            mediaPlayer.pause();
-            initialiseSeekBar();
-        }catch (Throwable e){
-            System.out.println(e.getMessage());
-        }
+        init();
 
         binding.buttonPlay.setOnClickListener(v -> onClickButton());
         binding.imageArtist.setOnClickListener(v -> onClickButton());
-        binding.buttonStop.setOnClickListener(v -> mediaPlayer.seekPlayer(0));
+        binding.buttonStop.setOnClickListener(v -> {
+            mediaPlayer.seekPlayer(0);
+            mediaPlayer.resume();
+            setTagButton(R.drawable.baseline_pause_circle_24);
+        });
 
         binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @SuppressLint("SetTextI18n")
@@ -153,4 +138,41 @@ public class ListFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
+
+    public void setTagButton(int tag){
+        binding.buttonPlay.setImageResource(tag);
+        binding.buttonPlay.setTag(tag);
+    }
+
+    public void setMusic(String data, String name, Bitmap bitmap){
+        binding.musicName.setText(name);
+        binding.imageArtist.setImageBitmap(bitmap);
+
+        mediaPlayer.stop();
+        mediaPlayer.play(data);
+
+        initialiseSeekBar();
+    }
+
+    private void onClickButton(){
+        if (binding.buttonPlay.getTag() != null && binding.buttonPlay.getTag().equals(R.drawable.baseline_pause_circle_24)){
+            mediaPlayer.pause();
+            setTagButton(R.drawable.baseline_play_circle_24);
+        }
+        else {
+            mediaPlayer.resume();
+            setTagButton(R.drawable.baseline_pause_circle_24);
+        }
+    }
+
+    private boolean checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return Environment.isExternalStorageEmulated();
+        } else {
+            int readCheck = ContextCompat.checkSelfPermission(requireContext(), READ_EXTERNAL_STORAGE);
+            int writeCheck = ContextCompat.checkSelfPermission(requireContext(), WRITE_EXTERNAL_STORAGE);
+            return readCheck == PackageManager.PERMISSION_GRANTED && writeCheck == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
 }
